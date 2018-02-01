@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class MediaService {
@@ -15,5 +15,12 @@ export class MediaService {
   }
   newUser(user) {
     return this.http.post(this.apiUrl + '/users', user);
+  }
+  login(user) {
+    return this.http.post(this.apiUrl + '/login', user).subscribe(response => {
+      console.log(response);
+    }, (error: HttpErrorResponse) => {
+      console.log(error);
+    });
   }
 }
