@@ -1,19 +1,22 @@
+
 <nav>
   <ul>
     <li>
-      <a [routerLink] = "'/register'">Register</a>
+      <a routerLink="/register" routerLinkActive="active">Register</a>
     </li>
     <li>
-      <a [routerLink] = "'/login'">Login</a>
+      <a routerLink="/login" routerLinkActive="active">Login</a>
     </li>
     <li>
-      <a [routerLink] = "'/logout'">Logout</a>
+      <a routerLink="/logout" routerLinkActive="active">Logout</a>
     </li>
     <li>
-      <a [routerLink] = "'/front'">Front page</a>
+      <a routerLink="/frontpage" routerLinkActive="active">Front page</a>
     </li>
     <li>
-      <a [routerLink] = "'/upload'">Upload</a>
+      <a routerLink="/upload" routerLinkActive="active">Upload</a>
     </li>
   </ul>
 </nav>
+
+<router-outlet></router-outlet>
