@@ -7,23 +7,21 @@ import {split} from 'ts-node';
 })
 export class ThumbnailPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
+  transform(value: string, args?: string): string {
     let koko: string;
 
-    function split() {
-      const temp = value.split(',');
-    }
+    const temp = value.split('.');
 
     // jaa split funktiolla value osiin, tallenna tulos nimellä temp
-    switch (split) {
-      case (koko = 160):
-        args = 'small' ;
+    switch (args) {
+      case ('small'):
+        koko = '160';
       break;
-      case (koko = 320):
-        args = 'medium' ;
+      case ('medium'):
+        koko = '320' ;
         break;
-      case (koko = 640):
-        args = 'large' ;
+      case ('large'):
+        koko = '640' ;
         break;
     }
     // jos args on small, koko = 160, medium = 320, large = 640

@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
     console.log(this.user);
     this.mediaService.newUser(this.user).subscribe( response => {
       console.log(response);
+      this.mediaService.login(this.user);
     }, (error: HttpErrorResponse) => {
       console.log(error);
     });

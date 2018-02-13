@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {User} from '../models/user';
 import {MediaService} from '../services/media.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,17 +12,25 @@ import {MediaService} from '../services/media.service';
 export class LoginComponent implements OnInit {
 
   user = new User('', '');
-  constructor(private mediaService: MediaService) { }
-  login() {
-    console.log(this.user);
-    this.mediaService.newUser(this.user).subscribe( response => {
-      console.log(response);
-    }, (error: HttpErrorResponse) => {
-      console.log(error);
-    });
 
+  constructor(private mediaService: MediaService, private router: Router) {
   }
+
+  login() {
+    this.mediaService.login(this.user);
+  }
+
   ngOnInit() {
+    if (localStorage.getItem('token') !== null) {
+      this.mediaService.getUserData(localStorage.getItem('token')).
+          subscribe( response => {
+        console.log(response);
+        this.router.navigate(['front']);
+      }, (error: HttpErrorResponse) => {
+        console.log(error);
+      });
+
+    }
   }
 
 }

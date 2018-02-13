@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {Login} from '../models/login';
 @Injectable()
 export class MediaService {
 
   apiUrl = 'http://media.mw.metropolia.fi/wbma';
   mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
+  logged = false;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   getAllMedia() {
@@ -16,14 +18,38 @@ export class MediaService {
   getNew() {
     return this.http.get(this.apiUrl + '/media?start=0&limit=10');
   }
+
+  getRange(start, limit) {
+    return this.http.get(this.apiUrl + '/media?start=' + start + '&limit=' +
+        limit);
+  }
+
   newUser(user) {
     return this.http.post(this.apiUrl + '/users', user);
   }
   login(user) {
-    return this.http.post(this.apiUrl + '/login', user).subscribe(response => {
-      console.log(response);
-    }, (error: HttpErrorResponse) => {
-      console.log(error);
+    this.http.post<Login>(this.apiUrl + '/login', user).subscribe(response => {
+    console.log(response);
+    this.logged = true;
+    localStorage.setItem('token', response.token);
+    this.router.navigate(['front']);
+  }, (error: HttpErrorResponse) => {
+    console.log(error);
+    this.router.navigate(['login']);
     });
   }
+
+getUserData(token) {
+  const options = {
+    headers: new HttpHeaders().set('x-access-token', token),
+  };
+  return this.http.get(this.apiUrl + '/users/user', options);
+}
+
+uploadMedia(token, fd) {
+  const options = {
+    headers: new HttpHeaders().set('x-access-token', token),
+  };
+  return this.http.post(this.apiUrl + '/media', fd, options);
+}
 }
